@@ -9,7 +9,10 @@ else
     echo "$DIR" > "$CFG_FILE"
 fi
 
-OUTDIR=/tmp/compsky/CAH
+read -p "Output directory (leave empty for /tmp/compsky/CAH): " OUTDIR
+if [[ "$OUTDIR" = "" ]]; then
+    OUTDIR=/tmp/compsky/CAH
+fi
 
 mkdir -p "$OUTDIR/cards/w"
 mkdir "$OUTDIR/cards/b"
@@ -48,7 +51,7 @@ for bw in b w; do
             fi
             echo "$line"
             hash="$((0x$(sha1sum <<<"$line")0))"
-            "$DIR/new-card.sh" $bw "$line" "$logo" "$OUTDIR/cards/$bw/$hash.png"
+            "$DIR/utils/gencard.sh" $bw "$line" "$logo" "$OUTDIR/cards/$bw/$hash.png"
         done < "$fp"
     done
 done
