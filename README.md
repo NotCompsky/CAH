@@ -4,4 +4,10 @@ Bash scripts to create cards that you can shuffle into `Cards Against Humanity` 
 
 # Dependencies
 
-    `sudo apt install curl imagemagick`
+`curl` and `imagemagick`
+
+## Ubuntu
+
+Install them with:
+
+    sudo apt install curl imagemagick
