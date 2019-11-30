@@ -1,17 +1,11 @@
 #!/bin/bash
 
-CFG_FILE=~/.config/compsky/CAH.txt
 
-if [ -f "$CFG_FILE" ]; then
-    DIR=$(cat "$CFG_FILE")
-else
-    read -p "Root directory of compsky/CAH: " DIR
-    echo "$DIR" > "$CFG_FILE"
-fi
+DIR="$(dirname "$(readlink -f "$0")")"
 
-read -p "Output directory (leave empty for /tmp/compsky/CAH): " OUTDIR
+read -p "Root output directory (leave empty for $DIR): " OUTDIR
 if [[ "$OUTDIR" = "" ]]; then
-    OUTDIR=/tmp/compsky/CAH
+	OUTDIR="$DIR"
 fi
 
 mkdir -p "$OUTDIR/cards/w"
@@ -24,6 +18,8 @@ else
 fi
 
 if [ -d "$DIR/res" ]; then
+	dummy=1
+else
     mkdir "$DIR/res"
 fi
 for f in uKXt3lY.png EKo1KSx.png EojZ6uO.png; do

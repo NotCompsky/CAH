@@ -1,14 +1,8 @@
 #!/bin/bash
 
 
-CFG_FILE=~/.config/compsky/CAH.txt
-
-if [ -f "$CFG_FILE" ]; then
-    DIR=$(cat "$CFG_FILE")
-else
-    read -p "Root directory of compsky/CAH: " DIR
-    echo "$DIR" > "$CFG_FILE"
-fi
+DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
+imagemagick_cmd=convert # magick
 
 
 type="$1"
@@ -55,18 +49,18 @@ font_size=301
 tmp_card_txt_fp=/tmp/card-text.png
 tmp1=/tmp/card1.png
 
-magick -background white -size "$textbox_w" -font "Helvetica-Bold" -fill '#000000' -pointsize "$((3*font_size/4))" "pango:$msg" "$tmp_card_txt_fp"
+"$imagemagick_cmd" -background white -size "$textbox_w" -font "Helvetica-Bold" -fill '#000000' -pointsize "$((3*font_size/4))" "pango:$msg" "$tmp_card_txt_fp"
 
-magick "$front" "$tmp_card_txt_fp" -size "$w"x"$h" -geometry "+$x1+$y1+$x2+$y2" -composite "$tmp1"
+"$imagemagick_cmd" "$front" "$tmp_card_txt_fp" -size "$w"x"$h" -geometry "+$x1+$y1+$x2+$y2" -composite "$tmp1"
 
 if [[ "$logo" = "" ]]; then
     dummy=1
 else
-    magick "$tmp1" "$logo" -size "$w"x"$h" -geometry "+440+3800+778+4051" -composite "$tmp1"
+	"$imagemagick_cmd" "$tmp1" "$logo" -size "$w"x"$h" -geometry "+440+3800+778+4051" -composite "$tmp1"
 fi
 
 if [[ "$type" = "w" ]]; then
     mv "$tmp1" "$out"
 else
-    magick "$tmp1" -negate "$out"
+	"$imagemagick_cmd" "$tmp1" -negate "$out"
 fi
